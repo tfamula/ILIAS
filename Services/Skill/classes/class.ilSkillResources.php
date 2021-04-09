@@ -102,9 +102,6 @@ class ilSkillResources implements ilSkillUsageInfo
     
     /**
      * Read resources
-     *
-     * @param
-     * @return
      */
     public function readResources()
     {
@@ -224,7 +221,6 @@ class ilSkillResources implements ilSkillUsageInfo
      * Get usage info
      *
      * @param
-     * @return
      */
     public static function getUsageInfo($a_cskill_ids, &$a_usages)
     {

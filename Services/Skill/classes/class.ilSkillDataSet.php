@@ -242,7 +242,6 @@ class ilSkillDataSet extends ilDataSet
      * Read data
      *
      * @param
-     * @return
      */
     public function readData($a_entity, $a_version, $a_ids, $a_field = "")
     {
@@ -364,6 +363,7 @@ class ilSkillDataSet extends ilDataSet
                         $obj_ref_id = ilObject::_getAllReferences($obj_id);
                         $obj_ref_id = end($obj_ref_id);
                         $profiles = ilSkillProfile::getLocalProfiles($obj_ref_id);
+                        $profile_ids = array();
                         foreach ($profiles as $p) {
                             $profile_ids[] = $p["id"];
                         }
@@ -411,18 +411,19 @@ class ilSkillDataSet extends ilDataSet
         switch ($a_entity) {
             case "skmg":
 
+                $deps = array();
                 if ($this->getMode() == self::MODE_SKILLS) {
                     // determine top nodes of main tree to be exported and all referenced template nodes
                     $sel_nodes = $this->getSelectedNodes();
                     $exp_types = array("skll", "scat", "sctr", "sktr");
                     if (!is_array($sel_nodes)) {
                         $childs = $this->skill_tree->getChildsByTypeFilter($this->skill_tree->readRootId(), $exp_types);
-                        $deps = array();
                         $skl_subtree_deps = array();
                         foreach ($childs as $c) {
                             $skl_subtree_deps[] = $c["child"];
                         }
                     } else {
+                        $skl_subtree_deps = array();
                         foreach ($sel_nodes as $n) {
                             if (in_array(ilSkillTreeNode::_lookupType((int) $n), $exp_types)) {
                                 $skl_subtree_deps[] = $n;
@@ -483,7 +484,6 @@ class ilSkillDataSet extends ilDataSet
      * Import record
      *
      * @param
-     * @return
      */
     public function importRecord($a_entity, $a_types, $a_rec, $a_mapping, $a_schema_version)
     {

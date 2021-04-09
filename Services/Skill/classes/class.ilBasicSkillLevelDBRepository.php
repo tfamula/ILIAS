@@ -74,6 +74,7 @@ class ilBasicSkillLevelDBRepository implements ilBasicSkillLevelRepository
     {
         $ilDB = $this->db;
 
+        $and = "";
         if ($a_id > 0) {
             $and = " AND id = " . $ilDB->quote($a_id, "integer");
         }

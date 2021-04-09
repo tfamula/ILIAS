@@ -139,9 +139,6 @@ class ilSkillTemplateReferenceGUI extends ilBasicSkillTemplateGUI
 
     /**
      * Insert
-     *
-     * @param
-     * @return
      */
     public function insert()
     {
@@ -330,9 +327,6 @@ class ilSkillTemplateReferenceGUI extends ilBasicSkillTemplateGUI
 
     /**
      * Cancel
-     *
-     * @param
-     * @return
      */
     public function cancel()
     {

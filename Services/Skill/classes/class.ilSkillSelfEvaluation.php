@@ -160,9 +160,6 @@ class ilSkillSelfEvaluation
 
     /**
      * Read
-     *
-     * @param
-     * @return
      */
     public function read()
     {
@@ -336,6 +333,8 @@ class ilSkillSelfEvaluation
         $lng->loadLanguageModule("skmg");
 
         $stree = new ilSkillTree();
+        $cnode = [];
+        $ls = [];
         $cnt = 0;
         $sum = 0;
         if ($stree->isInTree($a_top_skill_id)) {

@@ -590,6 +590,7 @@ class ilSkillTreeNode
             return false;
         } else {
             // get all "top" ids, i.e. remove ids, that have a selected parent
+            $cut_ids = [];
             foreach ($a_ids as $id) {
                 $path = $tree->getPathId($id);
                 $take = true;
@@ -632,6 +633,7 @@ class ilSkillTreeNode
         
         // put them into the clipboard
         $time = date("Y-m-d H:i:s", time());
+        $order = 0;
         foreach ($a_ids as $id) {
             $curnode = "";
             if ($tree->isInTree($id)) {
@@ -714,9 +716,6 @@ class ilSkillTreeNode
 
     /**
      * Remove all skill items from clipboard
-     *
-     * @param
-     * @return
      */
     public static function clearClipboard()
     {
@@ -753,6 +752,7 @@ class ilSkillTreeNode
 
         $item_type = ilSkillTreeNode::_lookupType($a_item_id);
 
+        $item = null;
         if ($item_type == "scat") {
             $item = new ilSkillCategory($a_item_id);
         } elseif ($item_type == "skll") {
@@ -882,7 +882,6 @@ class ilSkillTreeNode
      * Save childs order
      *
      * @param
-     * @return
      */
     public static function saveChildsOrder($a_par_id, $a_childs_order, $a_templates = false)
     {

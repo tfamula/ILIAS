@@ -565,9 +565,6 @@ class ilObjSkillManagementGUI extends ilObjectGUI
 
     /**
      * Test getCompletionDateForTriggerRefId
-     *
-     * @param
-     * @return
      */
     public function test()
     {
@@ -625,9 +622,6 @@ class ilObjSkillManagementGUI extends ilObjectGUI
 
     /**
      * Test checkUserCertificateForTriggerRefId
-     *
-     * @param
-     * @return
      */
     public function testCert()
     {
@@ -684,9 +678,6 @@ class ilObjSkillManagementGUI extends ilObjectGUI
 
     /**
      * Test getTriggerOfAllCertificates
-     *
-     * @param
-     * @return
      */
     public function testAllCert()
     {
@@ -731,9 +722,6 @@ class ilObjSkillManagementGUI extends ilObjectGUI
 
     /**
      * Test getSkillLevelsForTrigger
-     *
-     * @param
-     * @return
      */
     public function testLevels()
     {
@@ -774,38 +762,37 @@ class ilObjSkillManagementGUI extends ilObjectGUI
      * Set test subtabs
      *
      * @param
-     * @return
      */
-    public function setTestSubtabs($a_act)
+    public function setTestSubTabs($a_act)
     {
         $ilTabs = $this->tabs;
         $ilCtrl = $this->ctrl;
 
-        $ilTabs->addSubtab(
+        $ilTabs->addSubTab(
             "test",
             "getCompletionDateForTriggerRefId",
             $ilCtrl->getLinkTarget($this, "test")
         );
 
-        $ilTabs->addSubtab(
+        $ilTabs->addSubTab(
             "cert",
             "checkUserCertificateForTriggerRefId",
             $ilCtrl->getLinkTarget($this, "testCert")
         );
 
-        $ilTabs->addSubtab(
+        $ilTabs->addSubTab(
             "all_cert",
             "getTriggerOfAllCertificates",
             $ilCtrl->getLinkTarget($this, "testAllCert")
         );
 
-        $ilTabs->addSubtab(
+        $ilTabs->addSubTab(
             "levels",
             "getSkillLevelsForTrigger",
             $ilCtrl->getLinkTarget($this, "testLevels")
         );
 
-        $ilTabs->activateSubtab($a_act);
+        $ilTabs->activateSubTab($a_act);
     }
 
     //

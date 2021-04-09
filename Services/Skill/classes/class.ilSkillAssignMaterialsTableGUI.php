@@ -88,6 +88,7 @@ class ilSkillAssignMaterialsTableGUI extends ilTable2GUI
     public function getLevels()
     {
         $this->skill = ilSkillTreeNodeFactory::getInstance($this->basic_skill_id);
+        $levels = [];
         foreach ($this->skill->getLevelData() as $k => $v) {
             $levels[] = $v;
         }

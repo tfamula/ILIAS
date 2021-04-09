@@ -257,7 +257,6 @@ class ilPersonalSkillsGUI
      * Hide skill
      *
      * @param
-     * @return
      */
     public function hideSkill($a_skill_id, $a_tref_id = 0)
     {
@@ -266,9 +265,6 @@ class ilPersonalSkillsGUI
 
     /**
      * Determine current profile id
-     *
-     * @param
-     * @return
      */
     public function determineCurrentProfile()
     {
@@ -502,6 +498,7 @@ class ilPersonalSkillsGUI
             array("personal_skills_gui" => $this, "top_skill_id" => $a_top_skill_id, "user_id" => $a_user_id,
                 "edit" => $a_edit, "tref_id" => $a_tref_id)
         );
+        $skill_html = "";
         if (!$uip->replaced()) {
             $skill_html = $this->renderSkillHTML($a_top_skill_id, $a_user_id, $a_edit, $a_tref_id);
         }
@@ -623,6 +620,7 @@ class ilPersonalSkillsGUI
 
             // materials (new)
             if ($this->mode != "gap") {
+                $mat = "";
                 if ($this->getFilter()->showMaterialsRessources() && $this->use_materials) {
                     $mat = $this->getMaterials($level_data, $bs["tref"], $user->getId());
                 }
@@ -632,6 +630,7 @@ class ilPersonalSkillsGUI
             }
 
             // suggested resources
+            $sugg = "";
             if ($this->getFilter()->showMaterialsRessources()) {
                 $sugg = $this->getSuggestedResources($this->getProfileId(), $level_data, $bs["id"], $bs["tref"]);
             }
@@ -699,7 +698,7 @@ class ilPersonalSkillsGUI
     {
         if (!$this->ws_tree) {
             $this->ws_tree = new ilWorkspaceTree($a_user_id);
-            $this->ws_access = new ilWorkspaceAccessHandler($caption);
+            $this->ws_access = new ilWorkspaceAccessHandler();
         }
         
         $obj_id = $this->ws_tree->lookupObjectId($a_wsp_id);
@@ -744,7 +743,7 @@ class ilPersonalSkillsGUI
                 
                 case "file":
                     $file = new ilObjFile($obj_id, false);
-                    $url .= $file->getFilename();
+                    $url .= $file->getFileName();
                     break;
             }
         }
@@ -825,9 +824,6 @@ class ilPersonalSkillsGUI
     
     /**
      * Assign materials to skill levels
-     *
-     * @param
-     * @return
      */
     public function assignMaterials()
     {
@@ -902,9 +898,6 @@ class ilPersonalSkillsGUI
     
     /**
      * Assign materials to skill level
-     *
-     * @param
-     * @return
      */
     public function assignMaterial()
     {
@@ -916,6 +909,7 @@ class ilPersonalSkillsGUI
         $ilSetting = $this->setting;
         $ui = $this->ui;
 
+        $message = "";
         if (!$ilSetting->get("disable_personal_workspace")) {
             $url = 'ilias.php?baseClass=ilDashboardGUI&amp;cmd=jumpToWorkspace';
             $mbox = $ui->factory()->messageBox()->info($lng->txt("skmg_ass_materials_from_workspace"))
@@ -1026,9 +1020,6 @@ class ilPersonalSkillsGUI
     
     /**
      * Assign materials to skill levels
-     *
-     * @param
-     * @return
      */
     public function selfEvaluation()
     {
@@ -1128,9 +1119,6 @@ class ilPersonalSkillsGUI
     
     /**
      * LIst skills for adding
-     *
-     * @param
-     * @return
      */
     public function listSkillsForAdd()
     {
@@ -1287,6 +1275,7 @@ class ilPersonalSkillsGUI
         }
 
 
+        $intro_html = "";
         if ($this->getIntroText() != "") {
             $pan = ilPanelGUI::getInstance();
             $pan->setPanelStyle(ilPanelGUI::PANEL_STYLE_PRIMARY);
@@ -1322,6 +1311,7 @@ class ilPersonalSkillsGUI
         $this->getActualLevels($skills, $user_id);
 
         $incl_self_eval = false;
+        $self_vals = [];
         if (count($this->getGapAnalysisSelfEvalLevels()) > 0) {
             $incl_self_eval = true;
             $self_vals = $this->getGapAnalysisSelfEvalLevels();
@@ -1390,7 +1380,7 @@ class ilPersonalSkillsGUI
                 }
 
                 $chart = ilChart::getInstanceByType(ilChart::TYPE_SPIDER, "gap_chart" . $pkg_cnt);
-                $chart->setsize(800, 300);
+                $chart->setSize(800, 300);
                 $chart->setYAxisMax($max_cnt);
                 $chart->setLegLabels($leg_labels);
 
@@ -1604,6 +1594,7 @@ class ilPersonalSkillsGUI
             }
         }
 
+        $title = "";
         if ($this->gap_cat_title != "") {
             $title = $this->gap_cat_title;
         } elseif ($this->gap_mode == "max_per_type") {
@@ -1633,7 +1624,6 @@ class ilPersonalSkillsGUI
      *
      *
      * @param
-     * @return
      */
     public function getSelfEvalGapItem($a_levels, $a_tref_id = 0)
     {
@@ -1641,7 +1631,7 @@ class ilPersonalSkillsGUI
 
         $self_vals = $this->getGapAnalysisSelfEvalLevels();
         if (count($self_vals) == 0) {
-            return;
+            return "";
         }
 
         $a_activated_levels = array();
@@ -1917,9 +1907,6 @@ class ilPersonalSkillsGUI
 
     /**
      * List profile
-     *
-     * @param
-     * @return
      */
     public function listAssignedProfile()
     {

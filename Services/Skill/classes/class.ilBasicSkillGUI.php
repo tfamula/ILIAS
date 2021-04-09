@@ -41,11 +41,6 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
      */
     protected $lng;
 
-    /**
-     * @var ilTree
-     */
-    protected $tree;
-
     protected $tref_id = 0;
     protected $base_skill_id;
     
@@ -62,7 +57,6 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
         $this->help = $DIC["ilHelp"];
         $this->toolbar = $DIC->toolbar();
         $this->lng = $DIC->language();
-        $this->tree = $DIC->repositoryTree();
         $ilCtrl = $DIC->ctrl();
 
         $ilCtrl->saveParameter($this, array("obj_id", "level_id"));
@@ -545,6 +539,7 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
         $tree = new ilSkillTree();
         $path = $tree->getPathFull($this->node_object->getId());
         $desc = "";
+        $sep = "";
         foreach ($path as $p) {
             if (in_array($p["type"], array("scat", "skll"))) {
                 $desc .= $sep . $p["title"];
@@ -889,9 +884,6 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
 
     /**
      * Save resource settings
-     *
-     * @param
-     * @return
      */
     public function saveResourceSettings()
     {

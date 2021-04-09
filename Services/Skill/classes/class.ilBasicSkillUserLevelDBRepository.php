@@ -379,7 +379,7 @@ class ilBasicSkillUserLevelDBRepository implements ilBasicSkillUserLevelReposito
         $ilDB = $this->db;
 
         $by = ($a_eval_by != ilBasicSkill::EVAL_BY_ALL)
-            ? " AND self_eval = " . $ilDB->quote($a_self_eval, "integer")
+            ? " AND self_eval = " . $ilDB->quote($a_eval_by, "integer")
             : "";
 
         $set = $ilDB->query($q = "SELECT * FROM skl_user_skill_level " .

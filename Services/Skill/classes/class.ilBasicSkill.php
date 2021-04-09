@@ -321,6 +321,7 @@ class ilBasicSkill extends ilSkillTreeNode implements ilSkillUsageInfo
         $trigger_title = $obj_adapter->getTitleForObjId($trigger_obj_id);
         $trigger_type = $obj_adapter->getTypeForObjId($trigger_obj_id);
 
+        $status_date = "";
         $update = false;
 
         // self evaluations will update, if the last self evaluation is on the same day

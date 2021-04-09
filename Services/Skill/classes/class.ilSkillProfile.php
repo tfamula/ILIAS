@@ -128,7 +128,6 @@ class ilSkillProfile implements ilSkillUsageInfo
      * Add skill level
      *
      * @param
-     * @return
      */
     public function addSkillLevel($a_base_skill_id, $a_tref_id, $a_level_id, $a_order_nr)
     {
@@ -145,7 +144,6 @@ class ilSkillProfile implements ilSkillUsageInfo
      * Remove skill level
      *
      * @param
-     * @return
      */
     public function removeSkillLevel($a_base_skill_id, $a_tref_id, $a_level_id, $a_order_nr)
     {
@@ -176,9 +174,6 @@ class ilSkillProfile implements ilSkillUsageInfo
     
     /**
      * Read skill profile from db
-     *
-     * @param
-     * @return
      */
     public function read()
     {
@@ -876,7 +871,6 @@ class ilSkillProfile implements ilSkillUsageInfo
      * Get usage info
      *
      * @param
-     * @return
      */
     public static function getUsageInfo($a_cskill_ids, &$a_usages)
     {

@@ -268,21 +268,19 @@ class ilSkillUsage implements ilSkillUsageInfo
             case self::TYPE_GENERAL:
             case self::RESOURCE:
                 return $lng->txt("skmg_usage_obj_objects");
-                break;
             
             case self::USER_ASSIGNED:
             case self::PERSONAL_SKILL:
             case self::USER_MATERIAL:
             case self::SELF_EVAL:
                 return $lng->txt("skmg_usage_obj_users");
-                break;
 
             case self::PROFILE:
                 return $lng->txt("skmg_usage_obj_profiles");
-                break;
+
+            default:
+                return $lng->txt("skmg_usage_type_info_" . $a_type);
         }
-        
-        return $lng->txt("skmg_usage_type_info_" . $a_type);
     }
 
     /**
@@ -306,6 +304,7 @@ class ilSkillUsage implements ilSkillUsageInfo
     {
         $usages = $this->getAllUsagesOfTemplate($a_template_id);
         $obj_usages = array_column($usages, "gen");
+        $objects = [];
         foreach ($obj_usages as $obj) {
             $objects["objects"] = array_column($obj, "key");
         }

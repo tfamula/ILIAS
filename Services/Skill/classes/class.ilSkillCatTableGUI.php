@@ -103,6 +103,7 @@ class ilSkillCatTableGUI extends ilTable2GUI
         $lng = $this->lng;
         $ilCtrl = $this->ctrl;
 
+        $ret = "";
         switch ($a_set["type"]) {
             // category
             case "scat":

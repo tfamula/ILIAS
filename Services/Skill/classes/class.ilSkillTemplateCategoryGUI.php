@@ -39,7 +39,7 @@ class ilSkillTemplateCategoryGUI extends ilSkillTreeNodeGUI
     /**
      * Constructor
      */
-    public function __construct($a_node_id = 0, $a_tref_id)
+    public function __construct($a_node_id = 0, $a_tref_id = 0)
     {
         global $DIC;
 
@@ -165,9 +165,6 @@ class ilSkillTemplateCategoryGUI extends ilSkillTreeNodeGUI
 
     /**
      * List items
-     *
-     * @param
-     * @return
      */
     public function listItems()
     {
@@ -199,9 +196,6 @@ class ilSkillTemplateCategoryGUI extends ilSkillTreeNodeGUI
     
     /**
      * Add creation buttons
-     *
-     * @param
-     * @return
      */
     public static function addCreationButtons()
     {

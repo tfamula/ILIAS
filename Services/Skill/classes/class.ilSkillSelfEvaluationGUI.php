@@ -38,9 +38,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Constructor
-     *
-     * @param
-     * @return
      */
     public function __construct()
     {
@@ -79,9 +76,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Read self_evaluation
-     *
-     * @param
-     * @return
      */
     public function readSelfEvaluation()
     {
@@ -108,6 +102,7 @@ class ilSkillSelfEvaluationGUI
 
         // select skill for self evaluation
         $se_nodes = ilSkillTreeNode::getAllSelfEvaluationNodes();
+        $options = [];
         foreach ($se_nodes as $n_id => $title) {
             $options[$n_id] = $title;
         }
@@ -158,9 +153,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Delete self_evaluation
-     *
-     * @param
-     * @return
      */
     public function deleteSelfEvaluation()
     {
@@ -184,7 +176,6 @@ class ilSkillSelfEvaluationGUI
      * startSelfEvaluation
      *
      * @param
-     * @return
      */
     public function startSelfEvaluation($a_mode = "create")
     {
@@ -239,9 +230,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Save self evaluation
-     *
-     * @param
-     * @return
      */
     public function saveSelfEvaluation()
     {
@@ -272,9 +260,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Edit self evaluation
-     *
-     * @param
-     * @return
      */
     public function editSelfEvaluation()
     {
@@ -283,9 +268,6 @@ class ilSkillSelfEvaluationGUI
 
     /**
      * Update self evaluation and go one step back
-     *
-     * @param
-     * @return
      */
     public function updateBackSelfEvaluation()
     {
@@ -298,7 +280,6 @@ class ilSkillSelfEvaluationGUI
      * Update self evaluation
      *
      * @param
-     * @return
      */
     public function updateSelfEvaluation($a_back = false)
     {

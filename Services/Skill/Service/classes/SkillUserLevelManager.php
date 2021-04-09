@@ -81,6 +81,7 @@ class SkillUserLevelManager
             );
         }
 
+        $status_date = "";
         $update = false;
 
         // self evaluations will update, if the last self evaluation is on the same day

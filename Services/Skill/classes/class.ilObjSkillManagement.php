@@ -128,7 +128,7 @@ class ilObjSkillManagement extends ilObject
         // handle skil categories
         if ($source_obj->getType() == "scat") {
             $source_node = $tree->getNodeData($source_id);
-            $subnodes = $tree->getSubtree($source_node);
+            $subnodes = $tree->getSubTree($source_node);
 
             // check, if target is within subtree
             foreach ($subnodes as $subnode) {

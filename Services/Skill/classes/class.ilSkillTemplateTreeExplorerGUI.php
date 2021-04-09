@@ -162,7 +162,6 @@ class ilSkillTemplateTreeExplorerGUI extends ilTreeExplorerGUI
                 $ret = $ilCtrl->getLinkTargetByClass(["ilAdministrationGUI", "ilObjSkillManagementGUI","ilskillrootgui"], "listTemplates");
                 $ilCtrl->setParameterByClass("ilskillrootgui", "obj_id", $_GET["obj_id"]);
                 return $ret;
-                break;
 
             // template
             case "sktp":
@@ -170,7 +169,6 @@ class ilSkillTemplateTreeExplorerGUI extends ilTreeExplorerGUI
                 $ret = $ilCtrl->getLinkTargetByClass(["ilAdministrationGUI", "ilObjSkillManagementGUI","ilbasicskilltemplategui"], "edit");
                 $ilCtrl->setParameterByClass("ilbasicskilltemplategui", "obj_id", $_GET["obj_id"]);
                 return $ret;
-                break;
 
             // template category
             case "sctp":
@@ -178,8 +176,9 @@ class ilSkillTemplateTreeExplorerGUI extends ilTreeExplorerGUI
                 $ret = $ilCtrl->getLinkTargetByClass(["ilAdministrationGUI", "ilObjSkillManagementGUI","ilskilltemplatecategorygui"], "listItems");
                 $ilCtrl->setParameterByClass("ilskilltemplatecategorygui", "obj_id", $_GET["obj_id"]);
                 return $ret;
-                break;
-    
+
+            default:
+                return "";
         }
     }
     

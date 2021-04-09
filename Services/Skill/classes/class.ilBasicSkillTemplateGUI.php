@@ -178,6 +178,7 @@ class ilBasicSkillTemplateGUI extends ilBasicSkillGUI
         $tree = new ilSkillTree();
         $path = $tree->getPathFull($this->node_object->getId());
         $desc = "";
+        $sep = "";
         foreach ($path as $p) {
             if (in_array($p["type"], array("scat", "skll"))) {
                 $desc .= $sep . $p["title"];
@@ -200,7 +201,6 @@ class ilBasicSkillTemplateGUI extends ilBasicSkillGUI
      * Set header for skill
      *
      * @param
-     * @return
      */
     public function setTabs($a_tab = "")
     {
@@ -301,9 +301,6 @@ class ilBasicSkillTemplateGUI extends ilBasicSkillGUI
 
     /**
      * Edit skill
-     *
-     * @param
-     * @return
      */
     public function edit()
     {
@@ -341,7 +338,8 @@ class ilBasicSkillTemplateGUI extends ilBasicSkillGUI
 
         // (a) referenced skill template in main tree
         if ($this->tref_id > 0) {
-            return parent::showUsage();
+            parent::showUsage();
+            return;
         }
 
         // (b) skill template in templates view
@@ -369,7 +367,8 @@ class ilBasicSkillTemplateGUI extends ilBasicSkillGUI
 
         // (a) referenced skill template in main tree
         if ($this->tref_id > 0) {
-            return parent::showObjects();
+            parent::showObjects();
+            return;
         }
 
         // (b) skill template in templates view

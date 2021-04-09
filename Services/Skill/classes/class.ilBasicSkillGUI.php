@@ -80,6 +80,7 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
     {
         $ilCtrl = $this->ctrl;
         $ilTabs = $this->tabs;
+        $lng = $this->lng;
 
         //$tpl->getStandardTemplate();
         
@@ -93,8 +94,7 @@ class ilBasicSkillGUI extends ilSkillTreeNodeGUI
                 $skillLevelId = (int) $_GET["level_id"];
 
                 $output_gui = new ilCertificateGUI(
-                    new ilSkillCertificateAdapter($this->node_object, $skillLevelId),
-                    new ilDefaultPlaceholderDescription(),
+                    new ilDefaultPlaceholderDescription($lng),
                     new ilDefaultPlaceholderValues(),
                     $this->node_object->getId(),
                     ilCertificatePathConstants::SKILL_PATH . $this->node_object->getId() . '/' . $skillLevelId

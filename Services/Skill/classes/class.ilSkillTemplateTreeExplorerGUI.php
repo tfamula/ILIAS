@@ -22,7 +22,7 @@ class ilSkillTemplateTreeExplorerGUI extends ilTreeExplorerGUI
     /**
      * Constructor
      *
-     * @param object $a_parent_obj parent gui object
+     * @param object|string[] $a_parent_obj parent gui object(s)
      * @param string $a_parent_cmd parent command
      */
     public function __construct($a_parent_obj, $a_parent_cmd)

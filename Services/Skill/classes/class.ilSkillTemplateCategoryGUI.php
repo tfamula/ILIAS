@@ -153,14 +153,13 @@ class ilSkillTemplateCategoryGUI extends ilSkillTreeNodeGUI
      */
     public function initForm($a_mode = "edit")
     {
-        $r = parent::initForm($a_mode);
+        parent::initForm($a_mode);
         if ($a_mode == "create") {
             $ni = $this->form->getItemByPostVar("order_nr");
             $tree = new ilSkillTree();
             $max = $tree->getMaxOrderNr((int) $_GET["obj_id"], true);
             $ni->setValue($max + 10);
         }
-        return $r;
     }
 
     /**
@@ -311,7 +310,8 @@ class ilSkillTemplateCategoryGUI extends ilSkillTreeNodeGUI
 
         // (a) referenced skill template category in main tree
         if ($this->tref_id > 0) {
-            return parent::showUsage();
+            parent::showUsage();
+            return;
         }
 
         // (b) skill template category in templates view

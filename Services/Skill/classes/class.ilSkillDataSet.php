@@ -24,8 +24,8 @@ class ilSkillDataSet extends ilDataSet
      */
     protected $skill_tree;
     protected $init_order_nr;
-    protected $selected_nodes = false;
-    protected $selected_profiles = false;
+    protected $selected_nodes = [];
+    protected $selected_profiles = [];
     protected $mode = "";
 
     /**

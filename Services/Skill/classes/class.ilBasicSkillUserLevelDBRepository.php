@@ -104,7 +104,7 @@ class ilBasicSkillUserLevelDBRepository implements ilBasicSkillUserLevelReposito
 
         $recent = "";
 
-        $ilDB->setLimit(1);
+        $ilDB->setLimit(1, 0);
         $set = $ilDB->query("SELECT * FROM skl_user_skill_level WHERE " .
             "skill_id = " . $ilDB->quote($a_skill_id, "integer") . " AND " .
             "user_id = " . $ilDB->quote($a_user_id, "integer") . " AND " .
@@ -494,7 +494,7 @@ class ilBasicSkillUserLevelDBRepository implements ilBasicSkillUserLevelReposito
     ) : ?int {
         $ilDB = $this->db;
 
-        $ilDB->setLimit(1);
+        $ilDB->setLimit(1, 0);
         $set = $ilDB->query($q = "SELECT level_id FROM skl_user_has_level " .
             " WHERE trigger_obj_id = " . $ilDB->quote($a_object_id, "integer") .
             " AND skill_id = " . $ilDB->quote($skill_id, "integer") .
@@ -521,7 +521,7 @@ class ilBasicSkillUserLevelDBRepository implements ilBasicSkillUserLevelReposito
     ) : ?string {
         $ilDB = $this->db;
 
-        $ilDB->setLimit(1);
+        $ilDB->setLimit(1, 0);
         $set = $ilDB->query($q = "SELECT status_date FROM skl_user_has_level " .
             " WHERE trigger_obj_id = " . $ilDB->quote($a_object_id, "integer") .
             " AND skill_id = " . $ilDB->quote($skill_id, "integer") .

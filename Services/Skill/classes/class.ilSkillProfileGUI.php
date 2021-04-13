@@ -32,6 +32,21 @@ class ilSkillProfileGUI
     protected $tpl;
 
     /**
+     * @var \ILIAS\UI\Factory
+     */
+    protected $ui_fac;
+
+    /**
+     * @var \ILIAS\UI\Renderer
+     */
+    protected $ui_ren;
+
+    /**
+     * @var \Psr\Http\Message\ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * @var ilHelpGUI
      */
     protected $help;
@@ -66,6 +81,9 @@ class ilSkillProfileGUI
         $this->lng = $DIC->language();
         $this->tabs = $DIC->tabs();
         $this->tpl = $DIC["tpl"];
+        $this->ui_fac = $DIC->ui()->factory();
+        $this->ui_ren = $DIC->ui()->renderer();
+        $this->request = $DIC->http()->request();
         $this->help = $DIC["ilHelp"];
         $this->toolbar = $DIC->toolbar();
         $ilCtrl = $DIC->ctrl();
@@ -236,7 +254,7 @@ class ilSkillProfileGUI
         $tpl = $this->tpl;
         
         $form = $this->initProfileForm("create");
-        $tpl->setContent($form->getHTML());
+        $tpl->setContent($this->ui_ren->render([$form]));
     }
 
     public function createLocal()
@@ -253,7 +271,7 @@ class ilSkillProfileGUI
         );
 
         $form = $this->initProfileForm("createLocal");
-        $tpl->setContent($form->getHTML());
+        $tpl->setContent($this->ui_ren->render([$form]));
     }
     
     /**
@@ -265,7 +283,7 @@ class ilSkillProfileGUI
         
         $this->setTabs("settings");
         $form = $this->initProfileForm("edit");
-        $tpl->setContent($form->getHTML());
+        $tpl->setContent($this->ui_ren->render([$form]));
     }
     
     
@@ -279,43 +297,50 @@ class ilSkillProfileGUI
         $lng = $this->lng;
         $ilCtrl = $this->ctrl;
 
-        $form = new ilPropertyFormGUI();
-        
-        // title
-        $ti = new ilTextInputGUI($lng->txt("title"), "title");
-        $ti->setMaxLength(200);
-        $ti->setSize(40);
-        $ti->setRequired(true);
-        $form->addItem($ti);
-        
-        // description
-        $desc = new ilTextAreaInputGUI($lng->txt("description"), "description");
-        $desc->setCols(40);
-        $desc->setRows(4);
-        $form->addItem($desc);
-    
-        // save and cancel commands
+        $input_ti = $this->ui_fac->input()->field()->text($lng->txt("title"))
+            ->withRequired(true);
+
+        $input_desc = $this->ui_fac->input()->field()->textarea($lng->txt("description"));
+
+        $ilCtrl->setParameter(
+            $this,
+            'profile_settings',
+            'profile_settings_config'
+        );
+
         if ($this->checkPermissionBool("write")) {
             if ($a_mode == "create") {
-                $form->addCommandButton("save", $lng->txt("save"));
-                $form->addCommandButton("listProfiles", $lng->txt("cancel"));
-                $form->setTitle($lng->txt("skmg_add_profile"));
-            } else if ($a_mode == "createLocal") {
-                $form->addCommandButton("saveLocal", $lng->txt("save"));
-                $form->addCommandButton("listLocalProfiles", $lng->txt("cancel"));
-                $form->setTitle($lng->txt("skmg_add_local_profile"));
+                $section_profile = $this->ui_fac->input()->field()->section(
+                    ["input_ti" => $input_ti,
+                     "input_desc" => $input_desc],
+                    $lng->txt("skmg_add_profile")
+                );
+                $form_action = $ilCtrl->getFormAction($this, "save");
+            } elseif ($a_mode == "createLocal") {
+                $section_profile = $this->ui_fac->input()->field()->section(
+                    ["input_ti" => $input_ti,
+                     "input_desc" => $input_desc],
+                    $lng->txt("skmg_add_local_profile")
+                );
+                $form_action = $ilCtrl->getFormAction($this, "saveLocal");
             } else {
                 // set values
-                $ti->setValue($this->profile->getTitle());
-                $desc->setValue($this->profile->getDescription());
+                $input_ti = $input_ti->withValue($this->profile->getTitle());
+                $input_desc = $input_desc->withValue($this->profile->getDescription());
 
-                $form->addCommandButton("update", $lng->txt("save"));
-                $form->addCommandButton("listProfiles", $lng->txt("cancel"));
-                $form->setTitle($lng->txt("skmg_edit_profile"));
+                $section_profile = $this->ui_fac->input()->field()->section(
+                    ["input_ti" => $input_ti,
+                     "input_desc" => $input_desc],
+                    $lng->txt("skmg_edit_profile")
+                );
+                $form_action = $ilCtrl->getFormAction($this, "update");
             }
         }
 
-        $form->setFormAction($ilCtrl->getFormAction($this));
+        $form = $this->ui_fac->input()->container()->form()->standard(
+            $form_action,
+            ["section_profile" => $section_profile]
+        );
 
         return $form;
     }
@@ -334,16 +359,24 @@ class ilSkillProfileGUI
         }
 
         $form = $this->initProfileForm("create");
-        if ($form->checkInput()) {
+        if ($this->request->getMethod() == "POST"
+            && $this->request->getQueryParams()["profile_settings"] == "profile_settings_config") {
+            $form = $form->withRequest($this->request);
+            $result = $form->getData();
+
+            if (is_null($result)) {
+                return $tpl->setContent($this->ui_ren->render($form));
+            }
+
             $prof = new ilSkillProfile();
-            $prof->setTitle($form->getInput("title"));
-            $prof->setDescription($form->getInput("description"));
+            $prof->setTitle($result["section_profile"]["input_ti"]);
+            $prof->setDescription($result["section_profile"]["input_desc"]);
             $prof->create();
+
             ilUtil::sendSuccess($lng->txt("msg_obj_modified"), true);
             $ilCtrl->redirect($this, "listProfiles");
         } else {
-            $form->setValuesByPost();
-            $tpl->setContent($form->getHtml());
+            $tpl->setContent($this->ui_ren->render([$form]));
         }
     }
 
@@ -352,24 +385,38 @@ class ilSkillProfileGUI
         $tpl = $this->tpl;
         $lng = $this->lng;
         $ilCtrl = $this->ctrl;
+        $tabs = $this->tabs;
 
         if (!$this->checkPermissionBool("write")) {
             return;
         }
 
         $form = $this->initProfileForm("createLocal");
-        if ($form->checkInput()) {
+        if ($this->request->getMethod() == "POST"
+            && $this->request->getQueryParams()["profile_settings"] == "profile_settings_config") {
+            $form = $form->withRequest($this->request);
+            $result = $form->getData();
+
+            if (is_null($result)) {
+                $tabs->clearTargets();
+                $tabs->setBackTarget(
+                    $lng->txt("back_to_course"),
+                    $ilCtrl->getLinkTargetByClass("ilcontskilladmingui", "listProfiles")
+                );
+                return $tpl->setContent($this->ui_ren->render($form));
+            }
+
             $prof = new ilSkillProfile();
-            $prof->setTitle($form->getInput("title"));
-            $prof->setDescription($form->getInput("description"));
+            $prof->setTitle($result["section_profile"]["input_ti"]);
+            $prof->setDescription($result["section_profile"]["input_desc"]);
             $prof->setRefId($this->ref_id);
             $prof->create();
             $prof->addRoleToProfile(ilParticipants::getDefaultMemberRole($this->ref_id));
+
             ilUtil::sendSuccess($lng->txt("msg_obj_modified"), true);
             $ilCtrl->redirectByClass("ilcontskilladmingui", "listProfiles");
         } else {
-            $form->setValuesByPost();
-            $tpl->setContent($form->getHtml());
+            $tpl->setContent($this->ui_ren->render([$form]));
         }
     }
     
@@ -387,16 +434,24 @@ class ilSkillProfileGUI
         }
 
         $form = $this->initProfileForm("edit");
-        if ($form->checkInput()) {
-            $this->profile->setTitle($form->getInput("title"));
-            $this->profile->setDescription($form->getInput("description"));
+        if ($this->request->getMethod() == "POST"
+            && $this->request->getQueryParams()["profile_settings"] == "profile_settings_config") {
+            $form = $form->withRequest($this->request);
+            $result = $form->getData();
+
+            if (is_null($result)) {
+                $this->setTabs("settings");
+                return $tpl->setContent($this->ui_ren->render($form));
+            }
+
+            $this->profile->setTitle($result["section_profile"]["input_ti"]);
+            $this->profile->setDescription($result["section_profile"]["input_desc"]);
             $this->profile->update();
             
             ilUtil::sendInfo($lng->txt("msg_obj_modified"), true);
             $ilCtrl->redirect($this, "listProfiles");
         } else {
-            $form->setValuesByPost();
-            $tpl->setContent($form->getHtml());
+            $tpl->setContent($this->ui_ren->render([$form]));
         }
     }
     

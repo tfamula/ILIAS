@@ -1381,9 +1381,10 @@ class ilObjGlossaryGUI extends ilObjectGUI implements \ILIAS\Taxonomy\Settings\M
             $this->ctrl->getLinkTarget($this, "showGlossarySelector")
         );
 
-        $tab = new ilGlossaryAutoLinkTableGUI($this->getGlossary(), $this, "editGlossaries");
+        //$tab = new ilGlossaryAutoLinkTableGUI($this->getGlossary(), $this, "editGlossaries");
+        $table = $this->domain->table()->getGlossaryAutoLinkTable($this->getGlossary())->getComponent();
 
-        $this->tpl->setContent($tab->getHTML());
+        $this->tpl->setContent($this->ui_ren->render($table));
     }
 
     /**
@@ -1450,7 +1451,7 @@ class ilObjGlossaryGUI extends ilObjectGUI implements \ILIAS\Taxonomy\Settings\M
 
     public function removeGlossary(): void
     {
-        $this->object->removeAutoGlossary($this->edit_request->getGlossaryId());
+        $this->object->removeAutoGlossary($this->edit_request->getGlossaryId()); // ändern
         $this->object->update();
 
         $this->tpl->setOnScreenMessage('success', $this->lng->txt("msg_obj_modified"), true);

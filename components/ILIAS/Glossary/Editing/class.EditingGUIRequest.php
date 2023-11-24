@@ -151,4 +151,30 @@ class EditingGUIRequest
     {
         return $this->str("bulk_data");
     }
+
+    /**
+     * @return string[]
+     */
+    protected function getTableIds(string $key): array
+    {
+        return $this->strArray($key);
+    }
+
+    protected function getTableAction(string $key): string
+    {
+        return $this->str($key);
+    }
+
+    public function getTableGlossaryAutoLinkAction(): string
+    {
+        return $this->getTableAction("skl_glo_auto_link_table_action");
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTableGlossaryAutoLinkIds(): array
+    {
+        return $this->getTableIds("skl_glo_auto_link_table_glo_ids");
+    }
 }
